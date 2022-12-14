@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tenantfinder.DataModel.ChatData;
+import com.example.tenantfinder.R;
 
 import java.util.List;
 

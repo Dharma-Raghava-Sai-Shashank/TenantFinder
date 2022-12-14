@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.tenantfinder.Adapter.ChatsRecyclerViewAdapter;
 import com.example.tenantfinder.DataModel.ChatData;
+import com.example.tenantfinder.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

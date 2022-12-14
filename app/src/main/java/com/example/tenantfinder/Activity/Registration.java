@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.tenantfinder.Adapter.ViewPagerAdapter;
 import com.example.tenantfinder.databinding.RegistrationBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Registration extends AppCompatActivity {
 
     RegistrationBinding binding;
-    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +26,11 @@ public class Registration extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // If Current User :
-//        if(firebaseAuth.getCurrentUser() != null)
-//        {
-//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            finish();
-//        }
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
 
         // setting Fragments by Adapters :
         final ViewPagerAdapter registrationAdapter=new ViewPagerAdapter(getSupportFragmentManager(),this,binding.TabLayout.getTabCount());

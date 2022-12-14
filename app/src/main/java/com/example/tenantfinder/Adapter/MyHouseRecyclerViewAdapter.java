@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Adapter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,9 @@ import androidx.room.Room;
 import com.bumptech.glide.Glide;
 import com.example.tenantfinder.DataModel.HouseData;
 import com.example.tenantfinder.DataModel.MyHouseData;
+import com.example.tenantfinder.Database.AppDatabase;
+import com.example.tenantfinder.Interface.AppDataDao;
+import com.example.tenantfinder.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +57,7 @@ public class MyHouseRecyclerViewAdapter extends RecyclerView.Adapter<MyHouseRecy
     public void onBindViewHolder(@NonNull MyHouseRecyclerViewAdapter.ViewHolder holder, int position) {
 
         //Room Database :
-        AppDataDao houseDataDao=Database.houseDataDao();
+        AppDataDao houseDataDao=Database.appDataDao();
 
         // Firebase :
         FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();

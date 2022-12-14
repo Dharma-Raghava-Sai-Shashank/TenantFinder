@@ -1,4 +1,4 @@
-package com.example.tenantfinder.RegistrationFragments;
+package com.example.tenantfinder.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,19 +6,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.tenantfinder.MainActivity;
-import com.example.tenantfinder.R;
-import com.example.tenantfinder.Registration;
-import com.example.tenantfinder.Utills;
+import com.example.tenantfinder.Activity.ChatActivity;
+import com.example.tenantfinder.Activity.MainActivity;
+import com.example.tenantfinder.Utility.Utills;
+import com.example.tenantfinder.ViewModel.RegistrationViewModel;
 import com.example.tenantfinder.databinding.LoginFragmentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,16 +25,20 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginFragment extends Fragment {
 
     LoginFragmentBinding binding;
-    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+    RegistrationViewModel registrationViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // View Binding :
-        binding=LoginFragmentBinding.inflate(getLayoutInflater());
+        binding= LoginFragmentBinding.inflate(getLayoutInflater());
+
+        // View Model :
+        registrationViewModel= new ViewModelProvider(this).get(RegistrationViewModel.class);
 
         // Login Activity :
         binding.login.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
@@ -59,24 +60,30 @@ public class LoginFragment extends Fragment {
                     return;
                 }
 
+                // Login Activity :
                 binding.LprogressBar.setVisibility(View.VISIBLE);
-
-                firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            binding.LprogressBar.setVisibility(View.INVISIBLE);
-                            Utills.Toast(getContext(),"Login Successful");
-                            startActivity(new Intent(getContext().getApplicationContext(), MainActivity.class));
-                        }
-                        else {
-                            binding.LprogressBar.setVisibility(View.INVISIBLE);
-                            Utills.Toast(getContext(),"Error!");
-                        }
-                    }
-                });
+                Login(email,password);
             }
         });
         return binding.getRoot();
+    }
+
+    // Login Activity :
+    public void Login(String Email,String Password)
+    {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(Email,Password).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful())
+                {
+                    Utills.Toast(getContext(),"Login Successful");
+                    startActivity(new Intent(getContext(), MainActivity.class));
+                }
+                else
+                    Utills.Toast(getContext(),"Error!");
+                binding.LprogressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 }

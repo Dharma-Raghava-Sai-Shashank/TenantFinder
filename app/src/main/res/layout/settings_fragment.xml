@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Button
         android:id="@+id/SettingsAcount"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginTop="44dp"
         android:fontFamily="@font/aclonica"
@@ -18,12 +21,12 @@
         app:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.982"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView10"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/SettingsChats"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginTop="108dp"
         android:fontFamily="@font/aclonica"
@@ -34,12 +37,12 @@
         app:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.983"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView11"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/SettingsNotifications"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginTop="164dp"
         android:fontFamily="@font/aclonica"
@@ -50,12 +53,12 @@
         app:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.983"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView12"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/settingsStorage"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginTop="220dp"
         android:fontFamily="@font/aclonica"
@@ -66,12 +69,12 @@
         app:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.983"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView13"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/SettingsLang"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginTop="280dp"
         android:fontFamily="@font/aclonica"
@@ -82,12 +85,12 @@
         app:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.983"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView15"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/SettingsHelp"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
         android:layout_marginTop="344dp"
         android:fontFamily="@font/aclonica"
@@ -98,7 +101,7 @@
         app:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.983"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -106,7 +109,7 @@
         android:layout_width="42dp"
         android:layout_height="38dp"
         android:layout_marginTop="52dp"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsAcount"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_manage" />
 
@@ -115,7 +118,7 @@
         android:layout_width="42dp"
         android:layout_height="38dp"
         android:layout_marginTop="352dp"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsAcount"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_info_details" />
 
@@ -124,7 +127,7 @@
         android:layout_width="42dp"
         android:layout_height="38dp"
         android:layout_marginTop="288dp"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsAcount"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_mapmode" />
 
@@ -133,7 +136,7 @@
         android:layout_width="42dp"
         android:layout_height="38dp"
         android:layout_marginTop="116dp"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsAcount"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/sym_action_chat" />
 
@@ -142,8 +145,7 @@
         android:layout_width="35dp"
         android:layout_height="28dp"
         android:layout_marginTop="176dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsAcount"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_popup_reminder" />
 
@@ -152,7 +154,7 @@
         android:layout_width="42dp"
         android:layout_height="38dp"
         android:layout_marginTop="228dp"
-        app:layout_constraintEnd_toStartOf="@+id/SettingsAcount"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_popup_sync" />
 
@@ -160,13 +162,15 @@
         android:id="@+id/settingslogout"
         android:layout_width="100dp"
         android:layout_height="47dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginTop="52dp"
         android:onClick="logout"
         android:text="logout"
         app:backgroundTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SettingsHelp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

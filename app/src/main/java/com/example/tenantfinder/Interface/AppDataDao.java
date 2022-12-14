@@ -1,6 +1,7 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Interface;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -30,11 +31,20 @@ public interface AppDataDao {
     @Update
     void updateMyHouseData(MyHouseData myHouseData);
 
+    @Update
+    void updateMyPrifileData(MyProfileData myProfileData);
+
     @Query("SELECT * FROM MyHouseData WHERE uid= :hid")
-    LiveData<MyHouseData> FetchMyHouseDatabyID(String hid);
+    MyHouseData FetchMyHouseDatabyID(String hid);
+
+    @Query("SELECT * FROM MyProfileData WHERE uid= :pid")
+    MyProfileData FetchMyProfileDatabyID(String pid);
 
     @Query("DELETE FROM MyFavouriteData WHERE uid= :favhouseuid")
     void deleteFavouriteDatabyID(String favhouseuid);
+
+    @Query("DELETE FROM MyProfileData WHERE uid= :profuid")
+    void deleteProfileDataDatabyID(String profuid);
 
     @Query("DELETE FROM MyHouseData WHERE uid= :houseuid")
     void deleteHouseDatabyID(String houseuid);
@@ -43,10 +53,10 @@ public interface AppDataDao {
     void deleteConnectionDatabyID(String pid);
 
     @Query("SELECT * FROM MyHouseData")
-    LiveData<List<MyHouseData>> getAllHouseData();
+    List<MyHouseData>getAllHouseData();
 
     @Query("SELECT * FROM MyProfileData")
-    LiveData<List<MyProfileData>> getAllProfileData();
+    List<MyProfileData> getAllProfileData();
 
     @Query("SELECT * FROM MyFavouriteData")
     List<MyFavouriteData> getAllFavouriteData();
@@ -57,10 +67,13 @@ public interface AppDataDao {
     @Query("DELETE FROM MyProfileData")
     void deleteAllProfileData();
 
-    @Query("SELECT EXISTS(SELECT * FROM MyFavouriteData WHERE uid= :houseuid)")
-    Boolean is_hexist(String houseuid);
+    @Query("SELECT EXISTS(SELECT * FROM MyFavouriteData WHERE uid= :huid)")
+    Boolean is_hexist(String huid);
 
-    @Query("SELECT EXISTS(SELECT * FROM MyConnectionData WHERE uid= :pid)")
-    Boolean is_pexist(String pid);
+    @Query("SELECT EXISTS(SELECT * FROM MyProfileData WHERE uid= :puid)")
+    Boolean is_pexist(String puid);
+
+    @Query("SELECT EXISTS(SELECT * FROM MyConnectionData WHERE uid= :cuid)")
+    Boolean is_cexist(String cuid);
 }
 

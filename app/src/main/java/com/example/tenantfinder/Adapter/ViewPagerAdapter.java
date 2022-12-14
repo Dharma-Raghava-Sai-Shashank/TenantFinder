@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Adapter;
 
 import android.content.Context;
 
@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.tenantfinder.RegistrationFragments.LoginFragment;
-import com.example.tenantfinder.RegistrationFragments.SignUpFragment;
+import com.example.tenantfinder.Fragment.LoginFragment;
+import com.example.tenantfinder.Fragment.SignUpFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

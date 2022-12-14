@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.Adapter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,7 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.example.tenantfinder.Activity.ChatActivity;
+import com.example.tenantfinder.Activity.MainActivity;
 import com.example.tenantfinder.DataModel.MyConnectionData;
+import com.example.tenantfinder.Database.AppDatabase;
+import com.example.tenantfinder.Interface.AppDataDao;
+import com.example.tenantfinder.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -55,7 +60,7 @@ public class MyConnectionRecyclerViewAdapter extends RecyclerView.Adapter<MyConn
     public void onBindViewHolder(@NonNull MyConnectionRecyclerViewAdapter.ViewHolder holder, int position) {
 
         //Room Database :
-        AppDataDao houseDataDao= Database.houseDataDao();
+        AppDataDao houseDataDao= Database.appDataDao();
 
         // Firebase :
         FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();

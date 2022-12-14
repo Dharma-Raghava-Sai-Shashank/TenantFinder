@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.tenantfinder"
-        minSdk 19
+        minSdk 21
         targetSdk 32
         multiDexEnabled true
         versionCode 1
@@ -74,4 +74,18 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.r0adkll:slidableactivity:2.1.0'
 
+    def lifecycle_version = "2.5.1"
+    def arch_version = "2.1.0"
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+
+    // Saved state module for ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
 }

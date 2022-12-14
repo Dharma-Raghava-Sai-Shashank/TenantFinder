@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TenantFinder">
         <activity
-            android:name=".ChatActivity"
+            android:name=".Activity.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".Logo"
+            android:name=".Activity.Logo"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +27,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Registration"
+            android:name=".Activity.Registration"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:exported="false" />
     </application>
-
 </manifest>
