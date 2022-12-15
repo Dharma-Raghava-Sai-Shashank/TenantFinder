@@ -150,8 +150,8 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         String s=binding.ChatWrite.getText().toString();
-                        chats.child(firebaseAuth.getUid()).child(MainActivity.ChatUid).child(dataSnapshot.getChildrenCount()+"-me").child("chat").setValue("M:"+s);
-                        chats.child(MainActivity.ChatUid).child(firebaseAuth.getUid()).child(dataSnapshot.getChildrenCount()+"-you").child("chat").setValue("Y:"+s);
+                        chats.child(firebaseAuth.getUid()).child(MainActivity.ChatUid).child(String.format("%10s", Integer.toBinaryString((int) dataSnapshot.getChildrenCount())).replace(" ", "0")+"-me").child("chat").setValue("M:"+s);
+                        chats.child(MainActivity.ChatUid).child(firebaseAuth.getUid()).child(String.format("%10s", Integer.toBinaryString((int) dataSnapshot.getChildrenCount())).replace(" ", "0")+"-you").child("chat").setValue("Y:"+s);
                     }
                 }).addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override

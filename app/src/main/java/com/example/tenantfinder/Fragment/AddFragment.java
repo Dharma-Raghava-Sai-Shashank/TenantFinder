@@ -78,15 +78,16 @@ public class AddFragment extends Fragment {
                 // Room Database:
                 fragmentViewModel.SetHouseData(houseData);
 
+                // Uploading Photo to Firebase Storage :
+                fragmentViewModel.SetHouseImage(uri);
+
                 // Firebase Database :
                 fragmentViewModel.SetMyHouseData(new MyHouseData("", binding.AddHouseName.getText().toString(), binding.AddOwnerName.getText().toString(),
                         binding.AddPrice.getText().toString(), binding.AddAddress.getText().toString(), binding.AddDescription.getText().toString()));
 
-                // Uploading Photo to Firebase Storage :
-                fragmentViewModel.SetHouseImage(uri);
-
+                
                 binding.AddHouseName.setText("");binding.AddOwnerName.setText("");binding.AddPrice.setText("");binding.AddAddress.setText("");binding.AddDescription.setText("");
-                binding.AddHouseImage.setImageResource(R.drawable.house1);
+//                binding.AddHouseImage.setImageResource(R.drawable.house1);
                 binding.AprogressBar.setVisibility(View.INVISIBLE);
                 Utills.Toast(getContext(),"Added Successfully");
             }
