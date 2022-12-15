@@ -66,13 +66,13 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-        fragmentViewModel.GetProfileImage(getContext(),binding.ProfilePersonImage);
+        fragmentViewModel.GetMyProfileImage(getContext(),binding.ProfilePersonImage);
 
         // Full ImageViewc :
         binding.ProfilePersonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentViewModel.ProfileFullImage(v.getContext());
+                fragmentViewModel.ProfileFullImage(v.getContext(),FirebaseAuth.getInstance().getUid());
             }
         });
 
@@ -180,10 +180,17 @@ public class ProfileFragment extends Fragment {
         binding.profilelogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(Utills.AlertDialouge(v.getContext(),"Do you want to Logout ?"))
-                { FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(ProfileFragment.this.getActivity().getApplicationContext(), Registration.class));
-                }
+                Utills.AlertDialouge(getContext(),"Do you want to Logout ?");
+                Utills.b.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean Boolean) {
+                        if(Boolean)
+                        {
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(ProfileFragment.this.getActivity().getApplicationContext(), Registration.class));
+                        }
+                    }
+                });
 
             }
         });

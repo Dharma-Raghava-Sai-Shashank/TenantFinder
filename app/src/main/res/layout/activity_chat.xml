@@ -21,30 +21,34 @@
 
     <TextView
         android:id="@+id/ChatName"
-        android:layout_width="258dp"
+        android:layout_width="0dp"
         android:layout_height="34dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/aclonica"
         android:textColor="#000000"
         android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/refresh"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ChatImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ChatRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
         android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/ChatWrite"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ChatImage"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/chat_layout"/>
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/chat_layout" />
 
     <ImageView
         android:id="@+id/ChatDelete"
@@ -54,8 +58,6 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/ChatName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -68,9 +70,11 @@
 
     <EditText
         android:id="@+id/ChatWrite"
-        android:layout_width="358dp"
+        android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         android:background="@android:drawable/editbox_background_normal"
         android:ems="10"
         android:hint="  Send message"
@@ -98,7 +102,6 @@
         android:layout_width="37dp"
         android:layout_height="35dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="13dp"
         app:layout_constraintEnd_toStartOf="@+id/ChatDelete"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?android:attr/listChoiceIndicatorSingle" />

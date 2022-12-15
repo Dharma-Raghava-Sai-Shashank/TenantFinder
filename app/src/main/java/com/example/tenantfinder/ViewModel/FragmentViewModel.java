@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -43,6 +44,7 @@ public class FragmentViewModel extends AndroidViewModel {
     public MutableLiveData<List<MyFavouriteData>>FavouriteData=new MutableLiveData<>();
     public MutableLiveData<List<MyHouseData>>HouseData=new MutableLiveData<>();
     public MutableLiveData<List<MyConnectionData>>ConnectionData=new MutableLiveData<>();
+    public MutableLiveData<Boolean>bool=new MutableLiveData<>();
 
     public FragmentViewModel(@NonNull Application application) {
         super(application);
@@ -56,9 +58,9 @@ public class FragmentViewModel extends AndroidViewModel {
 
     }
 
-    public void GetProfileImage(Context context, ImageView imageView)
+    public void GetMyProfileImage(Context context, ImageView imageView)
     {
-        appDataRepository.GetProfileImage(context,imageView);
+        appDataRepository.GetMyProfileImage(context,imageView);
     }
 
     public void GetHouseImage(Context context, ImageView imageView,String uid)
@@ -66,9 +68,20 @@ public class FragmentViewModel extends AndroidViewModel {
         appDataRepository.GetHouseImage(context,imageView,uid);
     }
 
+    public void GetProfileImage(Context context, ImageView imageView,String uid)
+    {
+        appDataRepository.GetProfileImage(context,imageView,uid);
+    }
+
+
     public void GetMyProfileData()
     {
         MyProfileData.setValue(appDataRepository.GetProfileData());
+    }
+
+    public void GetProfileName(String uid, TextView Name)
+    {
+        appDataRepository.GetProfileName(uid,Name);
     }
 
     public void GetFavpuriteData()
@@ -116,6 +129,16 @@ public class FragmentViewModel extends AndroidViewModel {
        appDataRepository.SetMyHouseData(myHouseData);
     }
 
+    public void UpdateMyHouseData(MyHouseData myHouseData)
+    {
+        appDataRepository.UpdateMyHouseData(myHouseData);
+    }
+
+    public void UpdateHouseData(HouseData HouseData,String uid)
+    {
+        appDataRepository.UpdateHouseData(HouseData,uid);
+    }
+
     public void SetProfileImage(Uri uri)
     {
         appDataRepository.SetProfileImage(uri);
@@ -141,7 +164,22 @@ public class FragmentViewModel extends AndroidViewModel {
         appDataRepository.DeleteFavouriteData(uid);
     }
 
-    public void ProfileFullImage(Context context)
+    public void DeleteHouseData(String uid)
+    {
+        appDataRepository.DeleteHouseData(uid);
+    }
+
+    public void DeleteConnectionData(String uid)
+    {
+        appDataRepository.DeleteConnectionData(uid);
+    }
+
+    public void GetProfile(String uid,TextView Name,TextView Email,TextView Phone,TextView About)
+    {
+        appDataRepository.GetProfile(uid,Name,Email,Phone,About);
+    }
+
+    public void ProfileFullImage(Context context,String uid)
     {
         // Dialog Box :
         AlertDialog.Builder fullimage=new AlertDialog.Builder(context);
@@ -149,7 +187,7 @@ public class FragmentViewModel extends AndroidViewModel {
         ImageView FullHouseImage=view.findViewById(R.id.FullImage);
         fullimage.setView(view);
 
-        appDataRepository.GetProfileImage(view.getContext(),FullHouseImage);
+        appDataRepository.GetProfileImage(view.getContext(),FullHouseImage,uid);
 
         FullHouseImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         FullHouseImage.setScaleType(ImageView.ScaleType.FIT_XY);

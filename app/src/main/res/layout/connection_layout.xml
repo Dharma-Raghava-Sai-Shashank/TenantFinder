@@ -22,13 +22,14 @@
 
     <TextView
         android:id="@+id/ChatName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/aclonica"
         android:textColor="#000000"
         android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/Chatting"
         app:layout_constraintStart_toEndOf="@+id/ChatImage"
         app:layout_constraintTop_toTopOf="parent" />
 

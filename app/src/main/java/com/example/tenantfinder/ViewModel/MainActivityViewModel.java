@@ -61,7 +61,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void SetProfileImage(Context context, ImageView imageView)
     {
-        appDataRepository.GetProfileImage(context,imageView);
+        appDataRepository.GetMyProfileImage(context,imageView);
     }
 
     public void ReplaceFragment(int itemId)
@@ -106,6 +106,11 @@ public class MainActivityViewModel extends AndroidViewModel {
                 ProfileName.setValue("SETTINGS");
                 Fragment.setValue(new SettingsFragment());
                 a=7;}
+                break;
+            }case R.id.logout: {if(a!=8){
+                ProfileName.setValue("SETTINGS");
+                Fragment.setValue(new SettingsFragment());
+                a=8;}
                 break;
             }
         }

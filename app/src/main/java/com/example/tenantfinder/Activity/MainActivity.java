@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.tenantfinder.Fragment.ProfileFragment;
 import com.example.tenantfinder.R;
 import com.example.tenantfinder.Utility.Utills;
 import com.example.tenantfinder.ViewModel.MainActivityViewModel;
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     MainActivityViewModel mainActivityViewModel;
 
-//    public static String Name="Username";
     public static ImageView FullImage;
     public static String ChatUid=null;
 
@@ -81,11 +81,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         mainActivityViewModel.ReplaceFragment(item.getItemId());
-        if(item.getItemId()==R.id.logout)
-        {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(MainActivity.this.getApplicationContext(), Registration.class));
-        }
         return super.onOptionsItemSelected(item);
     }
     // Profilepic Touch :

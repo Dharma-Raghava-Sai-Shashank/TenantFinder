@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,6 +20,7 @@ import com.example.tenantfinder.DataModel.ProfileData;
 import com.example.tenantfinder.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,7 +51,7 @@ public class AppDataRepository {
     // ---> Accessing Databases <---
 
     // Firebase Database :
-    public void GetProfileImage(Context context, ImageView imageView)
+    public void GetMyProfileImage(Context context, ImageView imageView)
     {
         storage.child("Profile Image").child(firebaseAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -64,11 +66,41 @@ public class AppDataRepository {
         storage.child("House Image").child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(context).load(uri).placeholder(R.drawable.profile).into(imageView);
+                Glide.with(context).load(uri).placeholder(R.drawable.house1).into(imageView);
             }
         });
     }
 
+    public void GetProfile(String uid,TextView Name,TextView Email,TextView Phone,TextView About)
+    {
+        database.child("Users").child(uid).child("Profile").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot snapshot) {
+                Name.setText("Name: "+(snapshot.child("username").getValue()));Email.setText("Email: "+(snapshot.child("email").getValue()));
+                Phone.setText("Phone: "+(snapshot.child("phone").getValue()));About.setText("About: "+(snapshot.child("about").getValue()));
+            }
+        });
+    }
+
+    public void GetProfileName (String uid, TextView Name)
+    {
+        database.child("Users").child(uid).child("Profile").child("username").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                Name.setText(String.valueOf(dataSnapshot.getValue()));
+            }
+        });
+    }
+
+    public void GetProfileImage(Context context, ImageView imageView,String uid)
+    {
+        storage.child("Profile Image").child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(context).load(uri).placeholder(R.drawable.profile).into(imageView);
+            }
+        });
+    }
 
     public void SetUserSiginupCredentials(ProfileData profileData)
     {
@@ -84,11 +116,21 @@ public class AppDataRepository {
     {
         String s=firebaseAuth.getUid()+appDataDao.getAllHouseData().size();
         database.child("Users").child(firebaseAuth.getUid()).child("House").child(s).setValue(houseData);
+        houseData.setUid(s);
+        database.child("House Data").child(s).setValue(houseData);
+    }
+
+    public void UpdateHouseData(HouseData houseData,String uid)
+    {
+        database.child("Users").child(firebaseAuth.getUid()).child("House").child(uid).setValue(houseData);
+        houseData.setUid(uid);
+        database.child("House Data").child(uid).setValue(houseData);
     }
 
     public void SetProfileImage(Uri uri)
     {
-        storage.child("Profile Image").child(firebaseAuth.getUid()).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storage.child("Profile Image").child(firebaseAuth.getUid()).putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
         });
@@ -96,10 +138,19 @@ public class AppDataRepository {
 
     public void SetHouseImage(Uri uri)
     {
-        storage.child("House Image").child(firebaseAuth.getUid()+appDataDao.getAllHouseData().size()).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storage.child("House Image").child(firebaseAuth.getUid()+appDataDao.getAllHouseData().size()).
+                putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
         });
+    }
+
+    public void DeleteHouseData(String uid)
+    {
+        appDataDao.deleteHouseDatabyID(uid);
+        storage.child("House Image").child(uid).delete();
+        database.child("House Data").child(uid).removeValue();
+        database.child("Users").child(firebaseAuth.getUid()).child("House").child(uid).removeValue();
     }
 
     // Room Database :
@@ -132,6 +183,11 @@ public class AppDataRepository {
         appDataDao.deleteFavouriteDatabyID(uid);
     }
 
+    public void DeleteConnectionData(String uid)
+    {
+        appDataDao.deleteHouseDatabyID(uid);
+    }
+
     public void SetMyProfileData(MyProfileData myProfileData)
     {
         myProfileData.setUid(firebaseAuth.getUid());
@@ -155,7 +211,12 @@ public class AppDataRepository {
     {
         String s=firebaseAuth.getUid()+appDataDao.getAllHouseData().size();
         myHouseData.setUid(s);
-        database.child("House Data").child(s).setValue(myHouseData);
         appDataDao.insertHouseData(myHouseData);
     }
+
+    public void UpdateMyHouseData(MyHouseData myHouseData)
+    {
+        appDataDao.updateMyHouseData(myHouseData);
+    }
+
 }
