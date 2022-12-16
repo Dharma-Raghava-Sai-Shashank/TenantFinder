@@ -50,6 +50,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 
         // Data :
         MyProfileData ProfileData=appDataRepository.GetProfileData();
+        appDataRepository.CheckConnections();
+
         if(ProfileData!=null)
         {
             MyProfileData.setValue(ProfileData);

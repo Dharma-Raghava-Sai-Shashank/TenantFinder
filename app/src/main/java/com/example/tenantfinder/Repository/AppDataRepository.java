@@ -185,7 +185,7 @@ public class AppDataRepository {
 
     public void DeleteConnectionData(String uid)
     {
-        appDataDao.deleteHouseDatabyID(uid);
+        appDataDao.deleteConnectionDatabyID(uid);
     }
 
     public void SetMyProfileData(MyProfileData myProfileData)
@@ -217,6 +217,20 @@ public class AppDataRepository {
     public void UpdateMyHouseData(MyHouseData myHouseData)
     {
         appDataDao.updateMyHouseData(myHouseData);
+    }
+
+    public void CheckConnections()
+    {
+        database.child("Chats").child(firebaseAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snap:dataSnapshot.getChildren())
+                {
+                    if(!appDataDao.is_cexist(snap.getKey()))
+                        appDataDao.insertConnectionData(new MyConnectionData(snap.getKey()));
+                }
+            }
+        });
     }
 
 }

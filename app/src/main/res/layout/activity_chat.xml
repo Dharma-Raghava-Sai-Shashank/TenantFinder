@@ -36,7 +36,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ChatRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -60,25 +60,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/ChatSend"
-        android:layout_width="56dp"
-        android:layout_height="48dp"
-        android:src="@drawable/send"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ChatWrite" />
+
 
     <EditText
         android:id="@+id/ChatWrite"
         android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
         android:background="@android:drawable/editbox_background_normal"
+        android:elegantTextHeight="false"
         android:ems="10"
         android:hint="  Send message"
         android:inputType="textPersonName"
+        android:onClick="@string/app_name"
         android:paddingStart="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ChatSend"
@@ -105,6 +99,23 @@
         app:layout_constraintEnd_toStartOf="@+id/ChatDelete"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
+
+    <ImageView
+        android:id="@+id/ChatSend"
+        android:layout_width="56dp"
+        android:layout_height="48dp"
+        android:background="@drawable/send"
+        android:backgroundTint="@color/cardview_light_background"
+        android:clickable="true"
+        android:elevation="@dimen/cardview_default_radius"
+        android:focusableInTouchMode="true"
+        android:shadowColor="#64B5F6"
+        android:src="@drawable/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ChatWrite"
+        app:rippleColor="#64B5F6" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

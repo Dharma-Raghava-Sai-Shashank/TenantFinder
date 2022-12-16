@@ -174,8 +174,7 @@ public class FragmentViewModel extends AndroidViewModel {
         appDataRepository.DeleteConnectionData(uid);
     }
 
-    public void GetProfile(String uid,TextView Name,TextView Email,TextView Phone,TextView About)
-    {
+    public void GetProfile(String uid,TextView Name,TextView Email,TextView Phone,TextView About) {
         appDataRepository.GetProfile(uid,Name,Email,Phone,About);
     }
 
