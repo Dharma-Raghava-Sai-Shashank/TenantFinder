@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.tenantfinder.Fragment.ProfileFragment;
+import com.example.tenantfinder.NotificationService;
 import com.example.tenantfinder.R;
 import com.example.tenantfinder.Utility.Utills;
 import com.example.tenantfinder.ViewModel.MainActivityViewModel;

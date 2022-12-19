@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class AddFragment extends Fragment {
 
     AddFragmentBinding binding;
     FragmentViewModel fragmentViewModel;
+    public static Bitmap b;
 
     Uri uri;
     Bitmap bitmap;
@@ -118,5 +120,10 @@ public class AddFragment extends Fragment {
 
             }
         }
+    }
+    public Bitmap GetBitmap(Uri uri) throws FileNotFoundException {
+        InputStream inputStream=getActivity().getContentResolver().openInputStream(uri);
+        b= BitmapFactory.decodeStream(inputStream);
+        return b;
     }
 }

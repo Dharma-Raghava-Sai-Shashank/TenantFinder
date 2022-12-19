@@ -11,6 +11,7 @@ import com.example.tenantfinder.DataModel.MyConnectionData;
 import com.example.tenantfinder.DataModel.MyFavouriteData;
 import com.example.tenantfinder.DataModel.MyHouseData;
 import com.example.tenantfinder.DataModel.MyProfileData;
+import com.example.tenantfinder.MyChatData;
 
 import java.util.List;
 

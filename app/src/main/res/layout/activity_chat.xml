@@ -100,17 +100,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
 
-    <ImageView
+    <Button
         android:id="@+id/ChatSend"
         android:layout_width="56dp"
         android:layout_height="48dp"
         android:background="@drawable/send"
-        android:backgroundTint="@color/cardview_light_background"
-        android:clickable="true"
         android:elevation="@dimen/cardview_default_radius"
-        android:focusableInTouchMode="true"
-        android:shadowColor="#64B5F6"
-        android:src="@drawable/send"
+        app:iconTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ChatWrite"
         app:rippleColor="#64B5F6" />

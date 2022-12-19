@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.tenantfinder.Adapter.ViewPagerAdapter;
+import com.example.tenantfinder.NotificationService;
 import com.example.tenantfinder.databinding.RegistrationBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;

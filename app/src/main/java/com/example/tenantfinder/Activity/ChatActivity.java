@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.tenantfinder.Adapter.ChatsRecyclerViewAdapter;
 import com.example.tenantfinder.DataModel.ChatData;
 import com.example.tenantfinder.DataModel.HouseData;
+import com.example.tenantfinder.NotificationService;
 import com.example.tenantfinder.R;
 import com.example.tenantfinder.Utility.Utills;
 import com.example.tenantfinder.ViewModel.FragmentViewModel;
@@ -67,6 +69,8 @@ public class ChatActivity extends AppCompatActivity {
         binding= ActivityChatBinding.inflate(getLayoutInflater());
         // Setting Layout:
         setContentView(binding.getRoot());
+        // Stop Notification :
+        stopService(new Intent(ChatActivity.this, NotificationService.class));
         // View Model :
         fragmentViewModel= new ViewModelProvider(this).get(FragmentViewModel.class);
         uid=MainActivity.ChatUid;
@@ -151,27 +155,24 @@ public class ChatActivity extends AppCompatActivity {
         binding.ChatSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(binding.ChatWrite.getText().toString().equals(""))
+                String s=binding.ChatWrite.getText().toString();
+                if(s.equals(""))
                     return;
-                binding.ChatSend.setClickable(false);
                 chats.child(firebaseAuth.getUid()).child(uid).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        String s=binding.ChatWrite.getText().toString();
                         chats.child(firebaseAuth.getUid()).child(uid).child(String.format("%10s", Integer.toBinaryString((int) dataSnapshot.getChildrenCount())).replace(" ", "0")+"-me").child("chat").setValue("M:"+s);
                         chats.child(uid).child(firebaseAuth.getUid()).child(String.format("%10s", Integer.toBinaryString((int) dataSnapshot.getChildrenCount())).replace(" ", "0")+"-you").child("chat").setValue("Y:"+s);
                     }
                 }).addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        binding.ChatSend.setClickable(true);
                         binding.ChatWrite.setText("");
+                        binding.ChatWrite.setSelected(true);
                     }
                 });
             }
         });
-
-
     }
 
     public void ViewChat()

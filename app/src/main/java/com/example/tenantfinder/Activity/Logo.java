@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.tenantfinder.NotificationService;
 import com.example.tenantfinder.databinding.ActivityLogoBinding;
 
 public class Logo extends AppCompatActivity {
@@ -28,6 +29,10 @@ public class Logo extends AppCompatActivity {
         // Setting Layout:
         setContentView(binding.getRoot());
 
+        // Noptification :
+        stopService(new Intent(Logo.this, NotificationService.class));
+        startService(new Intent(Logo.this, NotificationService.class));
+
         // Getting address of other Activity:
         Intent intent=new Intent(this, Registration.class);
 
@@ -44,6 +49,7 @@ public class Logo extends AppCompatActivity {
 
                 // Starting new Activity:
                 startActivity(intent);
+
             }
         }.start();
     }
