@@ -26,6 +26,7 @@ import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.example.tenantfinder.Activity.Registration;
+import com.example.tenantfinder.DataModel.MyConnectionData;
 import com.example.tenantfinder.DataModel.MyFavouriteData;
 import com.example.tenantfinder.Database.AppDatabase;
 import com.example.tenantfinder.Fragment.ProfileFragment;
@@ -95,6 +96,24 @@ public class FavouriteRecyclerViewAdapter extends RecyclerView.Adapter<Favourite
             @Override
             public void onClick(View v) {
                 Like(position,v.getContext());
+            }
+        });
+
+        // Connection :
+        holder.Send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.BlueSend.getVisibility()==View.INVISIBLE){
+                    holder.BlueSend.setVisibility(View.VISIBLE);
+
+                    if(!fragmentViewModel.is_cexist(Data.get(position).getUid().substring(0,28)))
+                    {
+                        fragmentViewModel.SetConnectionData(new MyConnectionData(Data.get(position).getUid().substring(0,28)));
+                    }
+                }
+                else{
+                    holder.BlueSend.setVisibility(View.INVISIBLE);
+                }
             }
         });
 

@@ -2,14 +2,17 @@ package com.example.tenantfinder.Repository;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.CountDownTimer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
+import com.example.tenantfinder.DataModel.MyChatData;
+import com.example.tenantfinder.Interface.ChatDataDao;
 import com.example.tenantfinder.DataModel.HouseData;
 import com.example.tenantfinder.DataModel.MyConnectionData;
 import com.example.tenantfinder.DataModel.MyFavouriteData;
@@ -20,7 +23,9 @@ import com.example.tenantfinder.DataModel.ProfileData;
 import com.example.tenantfinder.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,6 +37,7 @@ import java.util.List;
 public class AppDataRepository {
 
     AppDataDao appDataDao;
+    ChatDataDao chatDataDao;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
@@ -41,6 +47,16 @@ public class AppDataRepository {
     public AppDataRepository(AppDataDao appDataDao)
     {
         this.appDataDao=appDataDao;
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        database=firebaseDatabase.getReference();
+        firebaseStorage=FirebaseStorage.getInstance();
+        storage=firebaseStorage.getReference();
+    }
+
+    public AppDataRepository(ChatDataDao chatDataDao)
+    {
+        this.chatDataDao=chatDataDao;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         database=firebaseDatabase.getReference();
@@ -205,6 +221,41 @@ public class AppDataRepository {
     public void SetConnectionData(MyConnectionData myConnectionData)
     {
         appDataDao.insertConnectionData(myConnectionData);
+    }
+
+    public void SetChatData(MyChatData myChatData)
+    {
+        myChatData.setUid(String.format("%10s", Integer.toBinaryString(chatDataDao.getCount()).replace(" ", "0")));
+        chatDataDao.insertChatData(myChatData);
+    }
+
+    public void DeleteAllChatData()
+    {
+        chatDataDao.deleteAllChatData();
+    }
+
+    public List<MyChatData>GetAllChatData()
+    {
+        return chatDataDao.getAllChatData();
+    }
+
+    public void UpdateChat(String uid)
+    {
+        firebaseDatabase.getReference("Chats").child(firebaseAuth.getUid()).child(uid).getRef().addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                SetChatData(new MyChatData("",snapshot.getValue().toString()));
+                snapshot.getRef().removeValue();
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     public void SetMyHouseData(MyHouseData myHouseData)

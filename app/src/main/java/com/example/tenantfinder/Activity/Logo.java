@@ -29,10 +29,6 @@ public class Logo extends AppCompatActivity {
         // Setting Layout:
         setContentView(binding.getRoot());
 
-        // Noptification :
-        stopService(new Intent(Logo.this, NotificationService.class));
-        startService(new Intent(Logo.this, NotificationService.class));
-
         // Getting address of other Activity:
         Intent intent=new Intent(this, Registration.class);
 

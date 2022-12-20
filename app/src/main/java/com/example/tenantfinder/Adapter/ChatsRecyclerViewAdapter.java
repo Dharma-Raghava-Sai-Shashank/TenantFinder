@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tenantfinder.DataModel.ChatData;
+import com.example.tenantfinder.DataModel.MyChatData;
 import com.example.tenantfinder.R;
 
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class ChatsRecyclerViewAdapter extends RecyclerView.Adapter<ChatsRecyclerViewAdapter.ViewHolder> {
 
-    List<ChatData> Data;
+    List<MyChatData> Data;
 
-    public ChatsRecyclerViewAdapter(List<ChatData> data) { Data = data; }
+    public ChatsRecyclerViewAdapter(List<MyChatData> data) { Data = data; }
 
     @NonNull
     @Override

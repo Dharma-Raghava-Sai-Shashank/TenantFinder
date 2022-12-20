@@ -29,6 +29,9 @@ public class Registration extends AppCompatActivity {
         // If Current User :
         if(FirebaseAuth.getInstance().getCurrentUser() != null)
         {
+            // Noptification :
+            startService(new Intent(Registration.this, NotificationService.class));
+
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }

@@ -1,7 +1,5 @@
 package com.example.tenantfinder.Interface;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -11,7 +9,6 @@ import com.example.tenantfinder.DataModel.MyConnectionData;
 import com.example.tenantfinder.DataModel.MyFavouriteData;
 import com.example.tenantfinder.DataModel.MyHouseData;
 import com.example.tenantfinder.DataModel.MyProfileData;
-import com.example.tenantfinder.MyChatData;
 
 import java.util.List;
 

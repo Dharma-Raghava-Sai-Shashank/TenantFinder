@@ -12,11 +12,15 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.tenantfinder.Activity.ChatActivity;
 import com.example.tenantfinder.Activity.MainActivity;
 import com.example.tenantfinder.Activity.Registration;
+import com.example.tenantfinder.DataModel.MyChatData;
 import com.example.tenantfinder.Utility.Utills;
+import com.example.tenantfinder.ViewModel.ChatViewModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -26,6 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class NotificationService extends Service {
+
+    private static final String CHANNEL_ID="My Channel";
+    private static int NID=100;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -37,57 +45,61 @@ public class NotificationService extends Service {
 
         // Notification :
         NotificationManager Notification =(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,200,
+                new Intent(this,ChatActivity.class),PendingIntent.FLAG_MUTABLE);
 
-        FirebaseDatabase.getInstance().getReference("Chats").child(FirebaseAuth.getInstance().getUid()).getRef().addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Chats").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snap:snapshot.getChildren())
-                {
-                    snap.getRef().addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                dataSnapshot.child(FirebaseAuth.getInstance().getUid()).getRef().addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot snap:snapshot.getChildren())
+                        {
                             MainActivity.ChatUid=snap.getKey();
-                            if(snapshot.child("chat").getValue().toString().charAt(0)=='M')
-                                return;
-                            FirebaseDatabase.getInstance().getReference("Users").child(snap.getKey()).child("Profile").child("username").get()
-                                    .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DataSnapshot dataSnapshot) {
-                                            Notification Note;
-                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                                Note=new Notification.Builder(getApplicationContext())
-                                                        .setSmallIcon(R.drawable.tf_image)
-                                                        .setLargeIcon(((BitmapDrawable) (ResourcesCompat.getDrawable(getResources(),R.drawable.menusend,null))).getBitmap())
-                                                        .setChannelId("My Channel")
-                                                        .setContentTitle(String.valueOf(dataSnapshot.getValue()))
-                                                        .setContentText(snapshot.child("chat").getValue().toString().substring(2))
-                                                        .setSubText("New Message")
-                                                        .setContentIntent(PendingIntent.getActivity(getApplicationContext(),100
-                                                                ,new Intent(getApplicationContext(), ChatActivity.class)
-                                                                ,PendingIntent.FLAG_UPDATE_CURRENT))
-                                                        .setAutoCancel(true)
-                                                        .build();
-                                                Notification.createNotificationChannel(new NotificationChannel("My Channel","New Channel",NotificationManager.IMPORTANCE_HIGH));
-                                            }
-                                            else{
-                                                Note=new Notification.Builder(getApplicationContext())
-                                                        .setSmallIcon(R.drawable.tf_image).setLargeIcon(((BitmapDrawable) (ResourcesCompat.getDrawable(getResources(),R.drawable.menusend,null))).getBitmap())
-                                                        .setContentTitle(String.valueOf(dataSnapshot.getValue()))
-                                                        .setContentText("New Message").setSubText("New Message").build();
-                                            }
-                                            Notification.notify(100,Note);
-                                        }
-                                    });
+                            snap.getRef().addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                    FirebaseDatabase.getInstance().getReference("Users").child(snap.getKey()).child("Profile").child("username").get()
+                                            .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DataSnapshot dataSnapshot) {
+                                                    Notification Note;
+                                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                                        Note=new Notification.Builder(getApplicationContext())
+                                                                .setSmallIcon(R.drawable.tf_image)
+                                                                .setLargeIcon(((BitmapDrawable) (ResourcesCompat.getDrawable(getResources(),R.drawable.menusend,null))).getBitmap())
+                                                                .setChannelId(CHANNEL_ID)
+                                                                .setContentTitle(String.valueOf(dataSnapshot.getValue()))
+                                                                .setContentText(snapshot.child("chat").getValue().toString().substring(2))
+                                                                .setSubText("New Message")
+                                                                .setContentIntent(pendingIntent)
+                                                                .setAutoCancel(true)
+                                                                .build();
+                                                        Notification.createNotificationChannel(new NotificationChannel(CHANNEL_ID,"New Channel",NotificationManager.IMPORTANCE_HIGH));
+                                                    }
+                                                    else{
+                                                        Note=new Notification.Builder(getApplicationContext())
+                                                                .setSmallIcon(R.drawable.tf_image).setLargeIcon(((BitmapDrawable) (ResourcesCompat.getDrawable(getResources(),R.drawable.menusend,null))).getBitmap())
+                                                                .setContentTitle(String.valueOf(dataSnapshot.getValue()))
+                                                                .setContentText("New Message").setSubText("New Message").build();
+                                                    }
+                                                    Notification.notify(NID,Note);
+                                                }
+                                            });
+                                }
+                                @Override public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                                @Override public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+                                @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                                @Override public void onCancelled(@NonNull DatabaseError error) {}
+                            });
+                            NID++;
                         }
-                        @Override public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-                        @Override public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
-                        @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-                        @Override public void onCancelled(@NonNull DatabaseError error) {}
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
             }
         });
         return START_STICKY;
@@ -95,7 +107,6 @@ public class NotificationService extends Service {
 
     @Override
     public void onDestroy() {
-        Utills.Toast(getApplicationContext(),"Destroyed");
         super.onDestroy();
     }
 }

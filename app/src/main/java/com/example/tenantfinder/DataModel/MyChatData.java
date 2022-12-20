@@ -1,4 +1,4 @@
-package com.example.tenantfinder;
+package com.example.tenantfinder.DataModel;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -8,14 +8,16 @@ import androidx.room.PrimaryKey;
 @Entity
 public class MyChatData {
         @PrimaryKey()
-        @NonNull
-        public String uid;
+        @NonNull public String uid;
         @ColumnInfo(name = "Chat")
         public String Chat;
 
-    public MyChatData(@NonNull String uid, String chat) {
+    public MyChatData(String uid, String chat) {
         this.uid = uid;
         Chat = chat;
+    }
+
+    public MyChatData() {
     }
 
     @NonNull

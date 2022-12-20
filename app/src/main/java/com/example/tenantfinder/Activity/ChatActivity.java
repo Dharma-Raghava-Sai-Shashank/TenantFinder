@@ -3,6 +3,8 @@ package com.example.tenantfinder.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,9 +26,11 @@ import com.bumptech.glide.Glide;
 import com.example.tenantfinder.Adapter.ChatsRecyclerViewAdapter;
 import com.example.tenantfinder.DataModel.ChatData;
 import com.example.tenantfinder.DataModel.HouseData;
+import com.example.tenantfinder.DataModel.MyChatData;
 import com.example.tenantfinder.NotificationService;
 import com.example.tenantfinder.R;
 import com.example.tenantfinder.Utility.Utills;
+import com.example.tenantfinder.ViewModel.ChatViewModel;
 import com.example.tenantfinder.ViewModel.FragmentViewModel;
 import com.example.tenantfinder.ViewModel.MainActivityViewModel;
 import com.example.tenantfinder.databinding.ActivityChatBinding;
@@ -54,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
 
     ActivityChatBinding binding;
     FragmentViewModel fragmentViewModel;
+    ChatViewModel chatViewModel;
     LinearLayoutManager layoutManager;
     String uid;
 
@@ -73,6 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         stopService(new Intent(ChatActivity.this, NotificationService.class));
         // View Model :
         fragmentViewModel= new ViewModelProvider(this).get(FragmentViewModel.class);
+        chatViewModel= new ViewModelProvider(this).get(ChatViewModel.class);
         uid=MainActivity.ChatUid;
 
         // Setting Text and Image:
@@ -113,7 +119,6 @@ public class ChatActivity extends AppCompatActivity {
         binding.refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewChat();
             }
         });
 
@@ -127,7 +132,8 @@ public class ChatActivity extends AppCompatActivity {
                         setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                chats.child(firebaseAuth.getUid()).child(uid).removeValue();
+                                chatViewModel.DeleteAllChatData();
+//                                chats.child(firebaseAuth.getUid()).child(uid).removeValue();
                                 dialog.cancel();
                             }
                         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -138,62 +144,57 @@ public class ChatActivity extends AppCompatActivity {
                 }).show();
             }
         });
-        chats.child(firebaseAuth.getUid()).child(uid).getRef().addChildEventListener(new ChildEventListener() {
+
+        // Chatting Activity :
+        firebaseDatabase.getReference("Chats").child(firebaseAuth.getUid()).child(uid).getRef().addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {ViewChat();}
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                chatViewModel.SetChatData(new MyChatData("",snapshot.child("chat").getValue().toString()));
+                snapshot.getRef().removeValue();
+            }
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {ViewChat();}
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-        // Chatting Activity :
+        binding.ChatWrite.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {binding.ChatSend.callOnClick();}});
         binding.ChatSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String s=binding.ChatWrite.getText().toString();
                 if(s.equals(""))
                     return;
-                chats.child(firebaseAuth.getUid()).child(uid).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                chatViewModel.SetChatData(new MyChatData("","M:"+s));
+                chats.child(uid).child(firebaseAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        chats.child(firebaseAuth.getUid()).child(uid).child(String.format("%10s", Integer.toBinaryString((int) dataSnapshot.getChildrenCount())).replace(" ", "0")+"-me").child("chat").setValue("M:"+s);
-                        chats.child(uid).child(firebaseAuth.getUid()).child(String.format("%10s", Integer.toBinaryString((int) dataSnapshot.getChildrenCount())).replace(" ", "0")+"-you").child("chat").setValue("Y:"+s);
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        binding.ChatWrite.setText("");
-                        binding.ChatWrite.setSelected(true);
+                            chats.child(uid).child(firebaseAuth.getUid()).child(String.valueOf(dataSnapshot.getChildrenCount())).child("chat").setValue("Y:"+s);
                     }
                 });
+                binding.ChatWrite.setText("");
+                binding.ChatWrite.setSelected(true);
             }
         });
-    }
 
-    public void ViewChat()
-    {
-        List<ChatData>Data =new ArrayList<>();
-        binding.ChatProgressBar.setVisibility(View.VISIBLE);
-        chats.child(firebaseAuth.getUid()).child(uid).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+        // Chat Data View :
+        chatViewModel.GetAllChatData();
+        chatViewModel.Chat.observe(this, new Observer<List<MyChatData>>() {
             @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snap:dataSnapshot.getChildren()) {
-                    Data.add(new ChatData(snap.child("chat").getValue().toString()));
-                }
-            }
-        }).addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                binding.ChatProgressBar.setVisibility(View.INVISIBLE);
-                binding.ChatRecyclerView.setAdapter(new ChatsRecyclerViewAdapter(Data));
+            public void onChanged(List<MyChatData> myChatData) {
+                binding.ChatRecyclerView.setAdapter(new ChatsRecyclerViewAdapter(myChatData));
                 layoutManager.setStackFromEnd(true);
                 binding.ChatRecyclerView.setLayoutManager(layoutManager);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+            super.onBackPressed();
+            startActivity(new Intent(this,MainActivity.class));
     }
 }

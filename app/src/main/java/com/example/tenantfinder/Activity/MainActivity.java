@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
             }
         });
+
         // Tool Bar (Menu) :
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.blue));
